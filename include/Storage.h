@@ -2,25 +2,20 @@
 #define STORAGE_H
 
 #include <iostream>
-#include <vector>
-#include <fstream>
 #include "Config.h"
 
 class Storage {
-  private:
+  protected:
     std::string pathToStorage;
-    std::string storageType;
 
   public:
-    Storage();
+    virtual std::vector<std::string> readList() const = 0;
+    virtual int getListSize() const = 0;
+    virtual void addToList(std::string task) = 0;
+    virtual void removeFromList(int index) = 0;
+    virtual void clearList() = 0;
 
-    std::vector<std::string> readList() const;
-    int getListSize() const;
-    void addToList(std::string task);
-    void removeFromList(int index);
-    void clearList();
-
-    ~Storage();
+    virtual ~Storage() = default;
 
 };
 

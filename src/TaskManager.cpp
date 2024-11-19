@@ -1,12 +1,20 @@
 #include "TaskManager.h"
 
-TaskManager::TaskManager() : storage() {
-  // create object of Storage
+TaskManager::TaskManager() {
+  Config conf;
+  ConfigData confData = conf.getConfigData();
+  if (confData.storageType.compare("FILE") == 0) {
+    this->storage = std::make_unique<FileStorage>();
+  } else if (confData.storageType.compare("SQLITE") == 0) {
+    this->storage = std::make_unique<SQLiteStorage>();
+  } else {
+    throw CustomException("Storage type defined in config file is invalid: " + confData.storageType);
+  }
 }
 
 void TaskManager::listTasks() const {
   try {
-    std::vector<std::string> tasks = this->storage.readList();
+    std::vector<std::string> tasks = this->storage->readList();
     if (tasks.size() == 0) {
       std::cout << "\tYour list is empty, use 'add <task name>' command to add a task" << std::endl;
       return;
@@ -25,7 +33,7 @@ void TaskManager::listTasks() const {
 
 void TaskManager::addTask(std::string task) {
   try {
-    this->storage.addToList(task);
+    this->storage->addToList(task);
   } catch (const CustomException& e) {
     std::cerr << "Something went wrong :( " << std::endl << e.what() << std::endl;
   } catch (const std::exception& e) {
@@ -35,7 +43,7 @@ void TaskManager::addTask(std::string task) {
 
 void TaskManager::removeTask(int taskId) {
   try {
-    int taskListSize = this->storage.getListSize();
+    int taskListSize = this->storage->getListSize();
 
     if (taskId <= 0 || taskId > taskListSize) {
       std::cout << "*Task is invalid, please enter correct task id*" << std::endl;
@@ -43,7 +51,7 @@ void TaskManager::removeTask(int taskId) {
       return;
     }
 
-    this->storage.removeFromList(taskId - 1);
+    this->storage->removeFromList(taskId - 1);
   } catch (const CustomException& e) {
     std::cerr << "Something went wrong :( " << std::endl << e.what() << std::endl;
   } catch (const std::exception& e) {
@@ -61,7 +69,7 @@ void TaskManager::help() const {
 
 void TaskManager::clearList() {
   try {
-    this->storage.clearList();
+    this->storage->clearList();
     std::cout << "Your task list was cleared and now it is empty" << std::endl;
   } catch (const CustomException& e) {
     std::cout << "Something went wrong :( " << std::endl << e.what() << std::endl;

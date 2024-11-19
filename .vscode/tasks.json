@@ -11,7 +11,8 @@
         "-I",
         "${cwd}/include",
         "-o",
-        "${workspaceFolder}/todo"
+        "${workspaceFolder}/todo",
+        "-lsqlite3"
       ],
       "options": {
         "cwd": "${fileDirname}"

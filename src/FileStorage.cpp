@@ -1,11 +1,9 @@
-#include "Storage.h"
-#include "CustomException.h"
+#include "FileStorage.h"
 
-Storage::Storage() {
+FileStorage::FileStorage() {
   Config conf;
   try {
     ConfigData confData = conf.getConfigData();
-    this->storageType = confData.storageType;
     this->pathToStorage = confData.pathToTodoFile;
   } catch (const CustomException& e) {
     std::cerr << "Retrieving config failed: Error message:" << std::endl << e.what() << std::endl;
@@ -14,7 +12,7 @@ Storage::Storage() {
   }
 };
 
-std::vector<std::string> Storage::readList() const {
+std::vector<std::string> FileStorage::readList() const {
   std::ifstream todoFile(this->pathToStorage);
 
   if (!todoFile) {
@@ -31,11 +29,11 @@ std::vector<std::string> Storage::readList() const {
   return tasks;
 }
 
-int Storage::getListSize() const {
+int FileStorage::getListSize() const {
   return this->readList().size();
 }
 
-void Storage::addToList(std::string task) {
+void FileStorage::addToList(std::string task) {
   std::ofstream todoFile(this->pathToStorage, std::ios::app);
 
   if (!todoFile) {
@@ -46,7 +44,7 @@ void Storage::addToList(std::string task) {
   todoFile.close();
 }
 
-void Storage::removeFromList(int index) {
+void FileStorage::removeFromList(int index) {
   std::vector<std::string> tasks = this->readList();
   tasks.erase(tasks.begin() + index);
   
@@ -63,7 +61,7 @@ void Storage::removeFromList(int index) {
   todoFile.close();
 }
 
-void Storage::clearList() {
+void FileStorage::clearList() {
   std::ofstream todoFile(this->pathToStorage, std::ios::trunc);
 
   if (!todoFile.is_open()) {
@@ -73,4 +71,4 @@ void Storage::clearList() {
   todoFile.close();
 }
 
-Storage::~Storage() {}
+FileStorage::~FileStorage() {}

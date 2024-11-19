@@ -2,12 +2,16 @@
 #define TASKMANAGER_H
 
 #include <iostream>
+#include "Config.h"
+#include "ConfigData.h"
 #include "Storage.h"
+#include "FileStorage.h"
+#include "SQLiteStorage.h"
 #include "CustomException.h"
 
 class TaskManager {
   private:
-    Storage storage;
+    std::unique_ptr<Storage> storage;
 
   public:
     TaskManager();
