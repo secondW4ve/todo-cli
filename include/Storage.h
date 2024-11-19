@@ -4,10 +4,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Config.h"
 
 class Storage {
   private:
-    std::string pathToStorageFile = "/home/yurchyk/.todo";
+    std::string pathToStorage;
+    std::string storageType;
 
   public:
     Storage();

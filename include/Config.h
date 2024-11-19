@@ -5,6 +5,8 @@
 #include <filesystem>
 #include <fstream>
 #include <cstdlib>
+#include <vector>
+#include <regex>
 #include "ConfigData.h"
 #include "CustomException.h"
 
@@ -15,6 +17,7 @@ class Config {
     const std::string todoConfigFileName = ".todo-conf";
 
   public:
+    Config();
     ConfigData getConfigData();
 };
 

@@ -1,10 +1,21 @@
 #include "Storage.h"
 #include "CustomException.h"
 
-Storage::Storage() {};
+Storage::Storage() {
+  Config conf;
+  try {
+    ConfigData confData = conf.getConfigData();
+    this->storageType = confData.storageType;
+    this->pathToStorage = confData.pathToTodoFile;
+  } catch (const CustomException& e) {
+    std::cerr << "Retrieving config failed: Error message:" << std::endl << e.what() << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "Something went really wrong :( " << std::endl << e.what() << std::endl;
+  }
+};
 
 std::vector<std::string> Storage::readList() const {
-  std::ifstream todoFile(this->pathToStorageFile);
+  std::ifstream todoFile(this->pathToStorage);
 
   if (!todoFile) {
     throw CustomException("Error opening .todo file!");
@@ -25,7 +36,7 @@ int Storage::getListSize() const {
 }
 
 void Storage::addToList(std::string task) {
-  std::ofstream todoFile(this->pathToStorageFile, std::ios::app);
+  std::ofstream todoFile(this->pathToStorage, std::ios::app);
 
   if (!todoFile) {
     throw CustomException("Error opening .todo file!");
@@ -39,7 +50,7 @@ void Storage::removeFromList(int index) {
   std::vector<std::string> tasks = this->readList();
   tasks.erase(tasks.begin() + index);
   
-  std::ofstream todoFile(this->pathToStorageFile);
+  std::ofstream todoFile(this->pathToStorage);
 
   if (!todoFile) {
     throw CustomException("Error opening .todo file!");
@@ -53,7 +64,7 @@ void Storage::removeFromList(int index) {
 }
 
 void Storage::clearList() {
-  std::ofstream todoFile(this->pathToStorageFile, std::ios::trunc);
+  std::ofstream todoFile(this->pathToStorage, std::ios::trunc);
 
   if (!todoFile.is_open()) {
     throw CustomException("Error opening .todo file!");

@@ -4,8 +4,8 @@
 #include <iostream>
 
 struct ConfigData {
-  // 0 is file 1 is database
-  int storageType;
+  // FILE is file SQLITE is database
+  std::string storageType;
   std::string pathToTodoFile;
   // Will need to add db connection details probably
 };
