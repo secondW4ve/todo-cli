@@ -1,0 +1,6 @@
+Package: todo-cli
+Version: 1.0
+Architecture: amd64
+Maintainer: Yurii Shchur  jura.shchur0605@gmail.com
+Depends: libsqlite3-0, bash, debconf
+Description: Simple todo cli app that help you manage your tasks list
