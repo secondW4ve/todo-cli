@@ -2,13 +2,6 @@
 
 CliReader::CliReader(int argc, char* argv[]) : numberOfArgs(argc), args(argv, argv + argc), taskManager() {}
 
-void CliReader::printArgs() const {
-  for (const auto& arg : args) {
-    std::cout << arg << " ";
-  }
-  std::cout << std::endl;
-}
-
 void CliReader::executeCommand() {
   if (this->numberOfArgs == 1) {
     this->taskManager.help();

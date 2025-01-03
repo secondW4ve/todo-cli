@@ -34,6 +34,7 @@ void TaskManager::listTasks() const {
 void TaskManager::addTask(std::string task) {
   try {
     this->storage->addToList(task);
+    this->listTasks();
   } catch (const CustomException& e) {
     std::cerr << "Something went wrong :( " << std::endl << e.what() << std::endl;
   } catch (const std::exception& e) {
@@ -52,6 +53,7 @@ void TaskManager::removeTask(int taskId) {
     }
 
     this->storage->removeFromList(taskId - 1);
+    this->listTasks();
   } catch (const CustomException& e) {
     std::cerr << "Something went wrong :( " << std::endl << e.what() << std::endl;
   } catch (const std::exception& e) {
@@ -64,6 +66,7 @@ void TaskManager::help() const {
   std::cout << "\tlist - list your tasks" << std::endl;
   std::cout << "\tadd <task name> - add task to your list" << std::endl;
   std::cout << "\tremove <task id> - remove task with specific id from your list" << std::endl;
+  std::cout << "\tlist clear - delete all tasks from list" << std::endl;
   std::cout << "\thelp - print available commands" << std::endl;
 }
 

@@ -14,7 +14,6 @@ class CliReader {
   public:
     CliReader(int argc, char* argv[]);
 
-    void printArgs() const;
     void executeCommand();
 
     ~CliReader();
