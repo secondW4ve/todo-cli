@@ -2,12 +2,20 @@
 set -e
 
 if [ "$1" = "purge" ]; then
-  echo "Removing config files..."
-  rm -rf /home/yurchyk/.config/todo-conf
-  echo "Config folder was removed!"
-  // TODO: Read first from conf file where it is located
+  CONFIG_FILE_NAME="todo.cfg"
+  PATH_TO_CONFIG=""
+  if [ -z "$XDG_CONFIG_HOME"]; then
+    PATH_TO_CONFIG="/etc/todo-cli"
+  else
+    PATH_TO_CONFIG="$XDG_CONFIG_HOME/todo-cli"
+  fi
+  TODO_FILE_PATH=$(grep "^STORAGE_PATH=" "$PATH_TO_CONFIG/$CONFIG_FILE_NAME" | cut -d'=' -f2)
+
   echo "Removing todo storage..."
-  rm -f /home/yurchyk/.todo
-  rm -f /home/yurchyk/.todo.db
+  rm -f $TODO_FILE_PATH
   echo "Storage files were removed!"
+
+  echo "Removing config files..."
+  rm -f $PATH_TO_CONFIG
+  echo "Config folder was removed!"
 fi

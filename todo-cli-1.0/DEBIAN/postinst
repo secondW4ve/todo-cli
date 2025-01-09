@@ -2,20 +2,20 @@
 
 set -e
 
-DEFAULT_CONFIG_PATH="/home/yurchyk/.config/todo-conf"
-
 echo "Configuring todo-cli..."
-echo "Enter the path to your configuration folder or use default location(${DEFAULT_CONFIG_PATH})":
-read -r config_path
 
-if [ -z "$config_path" ]; then
-  config_path=$DEFAULT_CONFIG_PATH
+config_path=""
+
+if [ -z "$XDG_CONFIG_HOME" ]; then
+  config_path="/etc/todo-cli"
+else
+  config_path="${XDG_CONFIG_HOME}/todo-cli"
 fi
 
 mkdir -p "$(dirname "$config_path")"
 
 DEFAULT_STORAGE_TYPE="FILE"
-DEFAULT_STORAGE_PATH="/home/yurchyk"
+DEFAULT_STORAGE_PATH=$config_path
 
 echo "Enter storage type that you want to use FILE(default) or SQLITE:"
 read -r storage_type
@@ -30,10 +30,10 @@ if [ -z "$storage_path" ]; then
   storage_path=$DEFAULT_STORAGE_PATH
 fi
 
-cat << EOF > "$config_path/.todo-conf"
+cat << EOF > "$config_path/todo.cfg"
 STORAGE_TYPE=$storage_type
 STORAGE_PATH=$storage_path
 EOF
 
-echo "Configuration created at $config_path/.todo-cli"
+echo "Configuration created at $config_path/todo.cfg"
 

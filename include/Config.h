@@ -13,8 +13,8 @@
 class Config {
   private:
     std::string pathToConfig;
-    const std::string todoConfigFolderName = "todo-conf";
-    const std::string todoConfigFileName = ".todo-conf";
+    const std::string todoConfigFolderName = "todo-cli";
+    const std::string todoConfigFileName = "todo.cfg";
 
   public:
     Config();
